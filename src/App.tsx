@@ -44,7 +44,7 @@ function App() {
             id="totalVolume"
             type="number"
             value={totalVolume}
-            onChange={(e) => setTotalVolume(Math.max(1, Number(e.target.value)))}
+            onChange={(e) => setTotalVolume(Math.max(0, Number(e.target.value)))}
             className="w-20 px-2 py-1 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
           />
         </div>
