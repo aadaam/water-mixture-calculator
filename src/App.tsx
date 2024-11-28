@@ -5,7 +5,8 @@ import { calculateMixedTemperature } from './utils/temperature';
 import { Droplets } from 'lucide-react';
 
 function App() {
-  const [totalVolume, setTotalVolume] = useState(100);
+  // Change totalVolume state from number to string
+  const [totalVolume, setTotalVolume] = useState('100');
   const [leftPercentage, setLeftPercentage] = useState(0);
   const [rightPercentage, setRightPercentage] = useState(100);
   const [leftTemperature, setLeftTemperature] = useState(21);
@@ -21,10 +22,13 @@ function App() {
     setLeftPercentage(100 - value);
   };
 
+  // Parse totalVolume to a number, defaulting to 1 if invalid
+  const numericTotalVolume = Math.max(1, Number(totalVolume) || 1);
+
   const resultTemperature = calculateMixedTemperature(
-    (leftPercentage / 100) * totalVolume,
+    (leftPercentage / 100) * numericTotalVolume,
     leftTemperature,
-    (rightPercentage / 100) * totalVolume,
+    (rightPercentage / 100) * numericTotalVolume,
     rightTemperature
   );
 
@@ -43,8 +47,10 @@ function App() {
           <input
             id="totalVolume"
             type="number"
+            min="1"
             value={totalVolume}
-            onChange={(e) => setTotalVolume(Math.max(0, Number(e.target.value)))}
+            // Update onChange to set the string value directly
+            onChange={(e) => setTotalVolume(e.target.value)}
             className="w-20 px-2 py-1 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
           />
         </div>
@@ -55,7 +61,8 @@ function App() {
           <TemperatureSlider
             percentage={leftPercentage}
             temperature={leftTemperature}
-            totalVolume={totalVolume}
+            // Pass the parsed numericTotalVolume
+            totalVolume={numericTotalVolume}
             onPercentageChange={handleLeftPercentageChange}
             onTemperatureChange={setLeftTemperature}
             side="left"
@@ -66,7 +73,8 @@ function App() {
           <TemperatureSlider
             percentage={rightPercentage}
             temperature={rightTemperature}
-            totalVolume={totalVolume}
+            // Pass the parsed numericTotalVolume
+            totalVolume={numericTotalVolume}
             onPercentageChange={handleRightPercentageChange}
             onTemperatureChange={setRightTemperature}
             side="right"
